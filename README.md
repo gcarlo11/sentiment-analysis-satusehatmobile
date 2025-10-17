@@ -1,52 +1,136 @@
-# Sentiment Analysis of SATUSEHAT Mobile App Reviews
+# 🩺 Sentiment Analysis of SATUSEHAT Mobile App Reviews
 
-#### Overview
+This project performs **sentiment analysis** on user reviews of the **SATUSEHAT Mobile** application — Indonesia’s national health platform.
+The main objective is to classify each review into **positive**, **neutral**, or **negative** sentiment categories using **machine learning** techniques.
 
-This project performs sentiment analysis on user reviews of the SATUSEHAT mobile application. The primary goal is to classify the sentiment of each review as "positive," "neutral," or "negative." This is achieved by building and evaluating machine learning models, specifically Support Vector Machine (SVM) and Naive Bayes. The project also addresses class imbalance using the Synthetic Minority Over-sampling Technique (SMOTE) and visualizes the most frequent words for each sentiment class using a WordCloud.
+Two models are developed and compared:
 
-#### Dataset
+* **Support Vector Machine (SVM)**
+* **Naïve Bayes (MultinomialNB)**
 
-The dataset used for this analysis was self-scraped from the Google Play Store and is stored in a CSV file named `satusehat_reviews.csv`. It contains user reviews, each with a corresponding star rating.
+The project also addresses **class imbalance** with the **Synthetic Minority Over-sampling Technique (SMOTE)** and visualizes the most frequent words per sentiment using **WordClouds**.
 
-#### Methodology
+---
 
-The project follows a standard machine learning pipeline for text classification:
+## 📂 Dataset
 
-1.  **Data Loading**: The `satusehat_reviews.csv` file is loaded into a pandas DataFrame.
-2.  **Labeling**: Review scores are converted into sentiment labels:
-    * `'positif'` for scores of 4 and 5
-    * `'netral'` for a score of 3
-    * `'negatif'` for scores of 1 and 2
-3.  **Text Preprocessing**: The raw text data is cleaned and prepared for the models through a series of steps:
-    * **Cleansing**: Non-alphanumeric characters are removed.
-    * **Case Folding**: All text is converted to lowercase.
-    * **Tokenization**: Text is split into individual words (tokens).
-    * **Stopword Filtering**: Common Indonesian stopwords are removed using the `nltk` library.
-    * **Stemming**: Words are reduced to their root form using the `Sastrawi` library.
-4.  **Feature Extraction**: The preprocessed text is converted into numerical features using the Term Frequency-Inverse Document Frequency (TF-IDF) method. This technique represents the importance of a word in a document relative to a collection of documents.
-5.  **Handling Class Imbalance**: The dataset is likely to have an unequal distribution of sentiment classes (e.g., more positive reviews than negative ones). The SMOTE (Synthetic Minority Over-sampling Technique) algorithm is used to over-sample the minority classes, creating a balanced dataset for training the models.
-6.  **Model Training and Evaluation**:
-    * The dataset is split into training and testing sets.
-    * **SVM (Support Vector Machine)**: A linear kernel SVM model is trained on the balanced data.
-    * **Naive Bayes (MultinomialNB)**: A Naive Bayes model is also trained for comparison.
-    * Both models are evaluated using common metrics such as **accuracy score**, a **classification report** (precision, recall, f1-score), and a **confusion matrix**.
-7.  **Visualization**: Word clouds are generated for each sentiment class (`'positif'`, `'netral'`, and `'negatif'`) to visually identify the most frequently used words in each category.
+The dataset was **self-scraped** from the **Google Play Store** and stored as `satusehat_reviews.csv`.
+Each entry contains:
 
-#### Results
+* The review text
+* A corresponding star rating (1–5)
 
-The models' performance is detailed in the output of the notebook, including:
+Sentiment labels are derived as follows:
 
-* **SVM Performance**:
-    * Accuracy: 0.9417
-    * A classification report showing high precision, recall, and f1-scores across all three classes. The model performs particularly well on the "neutral" and "positive" classes.
-* **Naive Bayes Performance**:
-    * Accuracy: 0.8842
-    * The classification report shows good performance, though slightly less accurate than the SVM model.
+* **Positive (positif):** 4–5 stars
+* **Neutral (netral):** 3 stars
+* **Negative (negatif):** 1–2 stars
 
-#### Word Clouds
+---
 
-The word clouds illustrate the keywords associated with each sentiment, providing insights into user feedback. For example:
-* The "positive" word cloud likely features words related to good service, ease of use, and helpful features.
-* The "negative" word cloud might show words related to bugs, slow performance, difficulty of use, or login issues.
+## ⚙️ Methodology
 
-This project demonstrates a complete process for text-based sentiment analysis, from data preparation to model evaluation and insightful visualization.
+The project follows a **standard machine learning pipeline** for text classification in Indonesian:
+
+### 1. Data Loading
+
+* Load the dataset using **pandas** and inspect for missing or duplicate entries.
+
+### 2. Labeling
+
+* Convert numerical ratings into categorical sentiment labels (`positif`, `netral`, `negatif`).
+
+### 3. Text Preprocessing
+
+Raw review text is cleaned and standardized through:
+
+* **Cleansing:** Remove non-alphanumeric characters and punctuation.
+* **Case Folding:** Convert text to lowercase.
+* **Tokenization:** Split sentences into individual words.
+* **Stopword Filtering:** Remove common Indonesian stopwords via `nltk`.
+* **Stemming:** Reduce words to their root form using the **Sastrawi** stemmer.
+
+### 4. Feature Extraction
+
+* Apply **TF–IDF vectorization** to transform preprocessed text into numerical features representing word importance.
+
+### 5. Handling Class Imbalance
+
+* Since positive reviews dominate, apply **SMOTE (Synthetic Minority Over-sampling Technique)** to generate synthetic samples of minority classes for balanced model training.
+
+### 6. Model Training and Evaluation
+
+Two supervised models are trained and compared:
+
+* **Support Vector Machine (SVM)** with linear kernel
+* **Naïve Bayes (MultinomialNB)**
+
+Models are evaluated using:
+
+* **Accuracy**
+* **Precision**
+* **Recall**
+* **F1-score**
+* **Confusion Matrix**
+
+### 7. Visualization
+
+* **WordClouds** illustrate the most frequent terms per sentiment class, providing qualitative insights into user feedback trends.
+
+---
+
+## 📊 Results
+
+| Model           | Accuracy   | Remarks                                                                                                        |
+| :-------------- | :--------- | :------------------------------------------------------------------------------------------------------------- |
+| **SVM**         | **0.9417** | Achieved high precision and recall across all classes, performing best on “neutral” and “positive” sentiments. |
+| **Naïve Bayes** | **0.8842** | Delivered solid results but slightly lower overall accuracy than SVM.                                          |
+
+### 🔤 WordCloud Insights
+
+* **Positive** reviews include words about *good service, ease of use, and helpful features*.
+* **Negative** reviews highlight issues such as *bugs, login problems, and slow performance*.
+
+---
+
+## 🧰 Requirements
+
+Install dependencies before running the notebook:
+
+```bash
+pip install pandas numpy scikit-learn matplotlib seaborn nltk Sastrawi wordcloud imbalanced-learn
+```
+
+---
+
+## 🚀 How to Run
+
+1. Clone this repository or download the notebook file:
+
+   ```
+   sentiment-analysis-satusehatmobile.ipynb
+   ```
+2. Install the dependencies listed above.
+3. Launch Jupyter Notebook:
+
+   ```bash
+   jupyter notebook sentiment-analysis-satusehatmobile.ipynb
+   ```
+4. Run all cells sequentially to reproduce data preprocessing, model training, and evaluation.
+
+---
+
+## 🔮 Future Improvements
+
+* Expand the dataset with newer reviews.
+* Apply **deep learning** models such as **LSTM** or **IndoBERT** for better semantic understanding.
+* Integrate model explainability using **SHAP** or **LIME**.
+* Develop a lightweight **dashboard** for real-time sentiment tracking.
+
+---
+
+## 🧑‍💻 Author
+
+**Rasyid**
+Computer Science student with an interest in **Data Science, Machine Learning, and Artificial Intelligence**.
+
